@@ -83,7 +83,12 @@ public class MainActivity extends ActionBarActivity {
             	@Override
             	public void onClick(View v)
             	{
-            		Toast.makeText(getActivity(), _textbox1.getText().toString(), Toast.LENGTH_SHORT).show();
+            		String str = _textbox1.getText().toString();
+            		if (str.length() == 0)
+            		{
+            			str = "Please enter something!";
+            		}
+            		Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
             		_textbox1.setText("");
             	}
             });
