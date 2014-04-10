@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.os.Build;
 
@@ -65,10 +66,17 @@ public class MainActivity extends ActionBarActivity {
         public PlaceholderFragment() {
         }
 
+        private Button _button1;
+        private EditText _textbox1;
+        
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            _button1 = (Button)rootView.findViewById(R.id.button1);
+            _textbox1 = (EditText)rootView.findViewById(R.id.editText1);
+            _textbox1.setHint("Enter Something");
+            _button1.setText("Enter");
             return rootView;
         }
     }
