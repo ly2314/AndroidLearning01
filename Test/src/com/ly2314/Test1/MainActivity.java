@@ -6,11 +6,13 @@ import android.support.v4.app.Fragment;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,24 +77,47 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            _button1 = (Button)rootView.findViewById(R.id.button1);
+            
             _textbox1 = (EditText)rootView.findViewById(R.id.editText1);
             _textbox1.setHint("Enter Something");
+            _textbox1.setOnKeyListener(new OnKeyListener()
+            {
+            	@Override
+            	public boolean onKey(View v, int keyCode, KeyEvent event)
+            	{
+            		if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
+            		{
+            			SendMessage();
+            			return true;
+            		}
+            		return false;
+            	}
+            });
+            
+            
+            
+            _button1 = (Button)rootView.findViewById(R.id.button1);
             _button1.setText("Enter");
             _button1.setOnClickListener(new OnClickListener() {
             	@Override
             	public void onClick(View v)
             	{
-            		String str = _textbox1.getText().toString();
-            		if (str.length() == 0)
-            		{
-            			str = "Please enter something!";
-            		}
-            		Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
-            		_textbox1.setText("");
+            		SendMessage();
             	}
             });
+            
             return rootView;
+        }
+        
+        public void SendMessage()
+        {
+    		String str = _textbox1.getText().toString();
+    		if (str.length() == 0)
+    		{
+    			str = "Please enter something!";
+    		}
+    		Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+    		_textbox1.setText("");
         }
     }
 
