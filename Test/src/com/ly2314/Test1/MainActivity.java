@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
@@ -49,14 +51,14 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void Click(View view)
+    /*public void Click(View view)
     {
         final EditText txt = (EditText)findViewById(R.id.editText1);
         Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Title");
         alert.setMessage(txt.getText().toString());
         alert.show();
-    }
+    }*/
     
     /**
      * A placeholder fragment containing a simple view.
@@ -77,6 +79,14 @@ public class MainActivity extends ActionBarActivity {
             _textbox1 = (EditText)rootView.findViewById(R.id.editText1);
             _textbox1.setHint("Enter Something");
             _button1.setText("Enter");
+            _button1.setOnClickListener(new OnClickListener() {
+            	@Override
+            	public void onClick(View v)
+            	{
+            		Toast.makeText(getActivity(), _textbox1.getText().toString(), Toast.LENGTH_SHORT).show();
+            		_textbox1.setText("");
+            	}
+            });
             return rootView;
         }
     }
