@@ -3,6 +3,7 @@ package com.ly2314.Test1;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.os.Build;
@@ -72,6 +76,7 @@ public class MainActivity extends ActionBarActivity {
 
         private Button _button1;
         private EditText _textbox1;
+        private CheckBox _checkbox1;
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,9 +97,7 @@ public class MainActivity extends ActionBarActivity {
             		}
             		return false;
             	}
-            });
-            
-            
+            });   
             
             _button1 = (Button)rootView.findViewById(R.id.button1);
             _button1.setText("Enter");
@@ -106,6 +109,24 @@ public class MainActivity extends ActionBarActivity {
             	}
             });
             
+            _checkbox1 = (CheckBox)rootView.findViewById(R.id.checkbox);
+            /*_checkbox1.setOnCheckedChangeListener(new OnCheckedChangeListener()
+            {
+
+				@Override
+				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+					// TODO Auto-generated method stub
+					if (arg1)
+					{
+						_textbox1.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+					}
+					else
+					{
+						_textbox1.setInputType(InputType.TYPE_CLASS_TEXT);
+					}
+				}            	
+            });*/
+            
             return rootView;
         }
         
@@ -115,6 +136,15 @@ public class MainActivity extends ActionBarActivity {
     		if (str.length() == 0)
     		{
     			str = "Please enter something!";
+    		}
+    		if (_checkbox1.isChecked())
+    		{
+    			int i = str.length();
+    			str = "";
+    			for (int j = 0; j < i; ++j)
+    			{
+    				str += "*";
+    			}
     		}
     		Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
     		_textbox1.setText("");
