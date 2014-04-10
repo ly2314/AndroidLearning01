@@ -3,12 +3,15 @@ package com.ly2314.Test1;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
@@ -17,7 +20,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
@@ -46,6 +48,15 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void Click(View view)
+    {
+        final EditText txt = (EditText)findViewById(R.id.editText1);
+        Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Title");
+        alert.setMessage(txt.getText().toString());
+        alert.show();
+    }
+    
     /**
      * A placeholder fragment containing a simple view.
      */
