@@ -4,6 +4,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.SingleLineTransformationMethod;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.os.Bundle;
@@ -109,23 +111,22 @@ public class MainActivity extends ActionBarActivity {
             	}
             });
             
-            _checkbox1 = (CheckBox)rootView.findViewById(R.id.checkbox);
-            /*_checkbox1.setOnCheckedChangeListener(new OnCheckedChangeListener()
+            _checkbox1 = (CheckBox)rootView.findViewById(R.id.checkBox1);
+            _checkbox1.setOnCheckedChangeListener(new OnCheckedChangeListener()
             {
 
 				@Override
 				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-					// TODO Auto-generated method stub
 					if (arg1)
 					{
-						_textbox1.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+						_textbox1.setTransformationMethod(PasswordTransformationMethod.getInstance());
 					}
 					else
 					{
-						_textbox1.setInputType(InputType.TYPE_CLASS_TEXT);
+						_textbox1.setTransformationMethod(SingleLineTransformationMethod.getInstance());
 					}
 				}            	
-            });*/
+            });
             
             return rootView;
         }
@@ -137,7 +138,7 @@ public class MainActivity extends ActionBarActivity {
     		{
     			str = "Please enter something!";
     		}
-    		if (_checkbox1.isChecked())
+    		if (_checkbox1.isChecked() == true)
     		{
     			int i = str.length();
     			str = "";
