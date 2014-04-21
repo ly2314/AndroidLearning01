@@ -8,6 +8,8 @@ import android.text.method.PasswordTransformationMethod;
 import android.text.method.SingleLineTransformationMethod;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -79,12 +81,16 @@ public class MainActivity extends ActionBarActivity {
         private Button _button1;
         private EditText _textbox1;
         private CheckBox _checkbox1;
+        private SharedPreferences sp;
+        private SharedPreferences.Editor editor;
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            
+        	sp = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        	editor = sp.edit();
+        			
             _textbox1 = (EditText)rootView.findViewById(R.id.editText1);
             _textbox1.setHint("Enter Something");
             _textbox1.setOnKeyListener(new OnKeyListener()
@@ -96,6 +102,11 @@ public class MainActivity extends ActionBarActivity {
             		{
             			SendMessage();
             			return true;
+            		}
+            		else
+            		{
+        				editor.putString("text", _textbox1.getText().toString());
+        				editor.commit();
             		}
             		return false;
             	}
