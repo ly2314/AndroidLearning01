@@ -160,12 +160,13 @@ public class MainActivity extends ActionBarActivity {
     			}
     		}
     		Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
-    		_textbox1.setText("");
     		
     		Intent _i = new Intent();
     		_i.setClass(getActivity(), MessageActivity.class);
+    		_i.putExtra("text", _textbox1.getText().toString());
     		getActivity().startActivity(_i);
     		
+    		_textbox1.setText("");    		
         }
     }
 
