@@ -9,6 +9,7 @@ import android.text.method.SingleLineTransformationMethod;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -160,6 +161,11 @@ public class MainActivity extends ActionBarActivity {
     		}
     		Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
     		_textbox1.setText("");
+    		
+    		Intent _i = new Intent();
+    		_i.setClass(getActivity(), MessageActivity.class);
+    		getActivity().startActivity(_i);
+    		
         }
     }
 
