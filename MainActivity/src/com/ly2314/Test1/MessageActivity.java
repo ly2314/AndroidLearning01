@@ -1,5 +1,6 @@
 package com.ly2314.Test1;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,9 +23,10 @@ public class MessageActivity extends Activity {
 		
 		_textView = (TextView) findViewById(R.id.textView1);
 		String text = getIntent().getStringExtra("text");
-		_textView.setText(text);
+		//_textView.setText(text);
 		
 		WriteFile(text);
+		_textView.setText(ReadFile());
 	}
 	
 	private void WriteFile(String txt)
@@ -46,5 +48,26 @@ public class MessageActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private String ReadFile()
+	{
+		String str = "";
+		try {
+			FileInputStream fis = openFileInput(FILE_NAME);
+			byte[] _b = new byte[1024];
+			while (fis.read(_b) != -1)
+			{
+				str += new String(_b);
+			}
+			fis.close();			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return str;
 	}
 }
