@@ -1,13 +1,18 @@
 package com.ly2314.Test1;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.widget.TextView;
 
 public class MessageActivity extends Activity {
@@ -26,6 +31,7 @@ public class MessageActivity extends Activity {
 		//_textView.setText(text);
 		
 		WriteFile(text);
+		WriteFileToExternalStorage(text);
 		_textView.setText(ReadFile());
 	}
 	
@@ -36,6 +42,36 @@ public class MessageActivity extends Activity {
 			txt += "\n";
 			
 			FileOutputStream fos = openFileOutput(FILE_NAME, Context.MODE_APPEND);
+			fos.write(txt.getBytes());
+			fos.flush();
+			fos.close();
+			
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@SuppressLint("NewApi")
+	private void WriteFileToExternalStorage(String txt)
+	{
+		File docDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+		if (docDir.exists() == false)
+		{
+			docDir.mkdir();
+		}
+		
+		File file = new File(docDir, FILE_NAME);
+		
+		try
+		{
+			txt += "\n";
+			
+			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(txt.getBytes());
 			fos.flush();
 			fos.close();
