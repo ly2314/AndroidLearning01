@@ -21,12 +21,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MessageActivity extends Activity {
 
 	private TextView _textView;
+	private ProgressBar _progressBar;
+	
 	private static final String FILE_NAME = "text.txt";
 	
 	@Override
@@ -36,6 +40,8 @@ public class MessageActivity extends Activity {
 		setContentView(R.layout.activity_message);
 		
 		_textView = (TextView) findViewById(R.id.textView1);
+		_progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		
 		String text = getIntent().getStringExtra("text");
 		//_textView.setText(text);
 		
@@ -87,6 +93,7 @@ public class MessageActivity extends Activity {
 		            Log.d("score", "Error: " + e.getMessage());
 		        }
 		        _textView.setText(text);
+		        _progressBar.setVisibility(View.GONE);
 		    }
 		});
 	}
