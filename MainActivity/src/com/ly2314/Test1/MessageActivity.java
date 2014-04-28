@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.parse.ParseObject;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -28,11 +30,19 @@ public class MessageActivity extends Activity {
 		
 		_textView = (TextView) findViewById(R.id.textView1);
 		String text = getIntent().getStringExtra("text");
-		//_textView.setText(text);
+		_textView.setText(text);
 		
-		WriteFile(text);
-		WriteFileToExternalStorage(text);
+		//WriteFile(text);
+		//WriteFileToExternalStorage(text);
+		SaveParseData("text", text);
 		_textView.setText(ReadFile());
+	}
+	
+	private void SaveParseData(String key, String value)
+	{
+        ParseObject testObject = new ParseObject("Message");
+        testObject.put(key, value);
+        testObject.saveInBackground();
 	}
 	
 	private void WriteFile(String txt)
