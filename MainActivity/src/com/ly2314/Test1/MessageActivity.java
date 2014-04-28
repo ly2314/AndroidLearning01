@@ -5,9 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import android.annotation.SuppressLint;
@@ -17,6 +20,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +37,7 @@ public class MessageActivity extends Activity {
 		
 		_textView = (TextView) findViewById(R.id.textView1);
 		String text = getIntent().getStringExtra("text");
-		_textView.setText(text);
+		//_textView.setText(text);
 		
 		//WriteFile(text);
 		//WriteFileToExternalStorage(text);
@@ -63,10 +67,37 @@ public class MessageActivity extends Activity {
 		});
 	}
 	
+	private void LoadParseData()
+	{
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+		query.findInBackground(new FindCallback<ParseObject>()
+		{
+		    public void done(List<ParseObject> messages, ParseException e)
+		    {
+		    	String text = "";
+		        if (e == null)
+		        {
+		            for (ParseObject message : messages)
+		            {
+		            	text += message.getString("text") + "\n";
+		            }
+		        }
+		        else
+		        {
+		            Log.d("score", "Error: " + e.getMessage());
+		        }
+		        _textView.setText(text);
+		    }
+		});
+	}
+	
 	private void ParseDataSaved(Boolean success)
 	{
 		if (success)
+		{
 			Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();	
+			LoadParseData();
+		}
 		else
 			Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();		
 	}
