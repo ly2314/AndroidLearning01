@@ -5,7 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -23,7 +26,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +37,7 @@ public class MessageActivity extends Activity {
 	private TextView _textView;
 	private ProgressBar _progressBar;
 	private ProgressDialog _progressDialog;
+	private ListView _listView;
 	
 	private static final String FILE_NAME = "text.txt";
 	
@@ -42,6 +48,8 @@ public class MessageActivity extends Activity {
 		setContentView(R.layout.activity_message);
 		
 		_textView = (TextView) findViewById(R.id.textView1);
+		_textView.setVisibility(View.GONE);
+		_listView = (ListView) findViewById(R.id.listView1);
 		_progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		_progressDialog = new ProgressDialog(this);
 		_progressDialog.setTitle("Test App");
@@ -86,7 +94,24 @@ public class MessageActivity extends Activity {
 		{
 		    public void done(List<ParseObject> messages, ParseException e)
 		    {
-		    	String text = "";
+		    	List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		    	String[] from = new String[] {"text", "time"};
+		    	int[] to = new int[] {android.R.id.text1, android.R.id.text2};
+		    	for (ParseObject message : messages)
+		    	{
+		    		Map<String, Object> item = new HashMap<String, Object>();
+		    		item.put("text", message.getString("text"));
+		    		item.put("time", message.getUpdatedAt().toString());
+		    		data.add(item);
+		    	}
+		    	
+		    	SimpleAdapter adapter = new SimpleAdapter(MessageActivity.this, data, android.R.layout.simple_list_item_2, from, to);
+		    	_listView.setAdapter(adapter);
+		    	
+		        _progressBar.setVisibility(View.GONE);
+		        _progressDialog.dismiss();
+		    	
+		    	/*String text = "";
 		        if (e == null)
 		        {
 		            for (ParseObject message : messages)
@@ -100,7 +125,7 @@ public class MessageActivity extends Activity {
 		        }
 		        _textView.setText(text);
 		        _progressBar.setVisibility(View.GONE);
-		        _progressDialog.dismiss();
+		        _progressDialog.dismiss();*/
 		    }
 		});
 	}
