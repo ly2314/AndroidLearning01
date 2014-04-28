@@ -38,7 +38,7 @@ public class MessageActivity extends Activity {
 		//WriteFile(text);
 		//WriteFileToExternalStorage(text);
 		SaveParseData("text", text);
-		_textView.setText(ReadFile());
+		//_textView.setText(ReadFile());
 	}
 	
 	private void SaveParseData(String key, String value)
