@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -16,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MessageActivity extends Activity {
 
@@ -42,7 +45,30 @@ public class MessageActivity extends Activity {
 	{
         ParseObject testObject = new ParseObject("Message");
         testObject.put(key, value);
-        testObject.saveInBackground();
+        testObject.saveInBackground(new SaveCallback() {
+			
+			@Override
+			public void done(ParseException arg0) {
+				// TODO Auto-generated method stub
+				if (arg0 == null)
+				{
+					ParseDataSaved(true);
+				}
+				else
+				{
+					arg0.printStackTrace();
+					ParseDataSaved(false);
+				}
+			}
+		});
+	}
+	
+	private void ParseDataSaved(Boolean success)
+	{
+		if (success)
+			Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();	
+		else
+			Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();		
 	}
 	
 	private void WriteFile(String txt)
