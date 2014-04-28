@@ -16,6 +16,7 @@ import com.parse.SaveCallback;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ public class MessageActivity extends Activity {
 
 	private TextView _textView;
 	private ProgressBar _progressBar;
+	private ProgressDialog _progressDialog;
 	
 	private static final String FILE_NAME = "text.txt";
 	
@@ -41,6 +43,10 @@ public class MessageActivity extends Activity {
 		
 		_textView = (TextView) findViewById(R.id.textView1);
 		_progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		_progressDialog = new ProgressDialog(this);
+		_progressDialog.setTitle("Test App");
+		_progressDialog.setMessage("Loading Data");
+		_progressDialog.show();
 		
 		String text = getIntent().getStringExtra("text");
 		//_textView.setText(text);
@@ -94,6 +100,7 @@ public class MessageActivity extends Activity {
 		        }
 		        _textView.setText(text);
 		        _progressBar.setVisibility(View.GONE);
+		        _progressDialog.dismiss();
 		    }
 		});
 	}
