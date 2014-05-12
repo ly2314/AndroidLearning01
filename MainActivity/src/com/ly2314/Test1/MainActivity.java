@@ -32,6 +32,7 @@ import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.PushService;
 
 public class MainActivity extends ActionBarActivity {
@@ -48,6 +49,7 @@ public class MainActivity extends ActionBarActivity {
         Parse.initialize(this, "UL5aUW60NIRAoOzKCK0Oe9ddu8jRrkQKZ61WJT2l", "P5e07cjyEJJAXdvcpfK0nuSsO7DPy5f2ISoXXlgx");
         PushService.setDefaultPushCallback(this, ActionBarActivity.class);
         ParseInstallation.getCurrentInstallation().saveInBackground();
+		PushService.subscribe(this, "all", ActionBarActivity.class);
     }
 
 
@@ -157,6 +159,7 @@ public class MainActivity extends ActionBarActivity {
     		if (str.length() == 0)
     		{
     			str = "Please enter something!";
+    			return;
     		}
     		if (_checkbox1.isChecked() == true)
     		{
@@ -168,13 +171,18 @@ public class MainActivity extends ActionBarActivity {
     			}
     		}
     		Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+
+    		_textbox1.setText("");
+    		
+    		ParsePush push = new ParsePush();
+    		push.setChannel("all");
+    		push.setMessage(str);
+    		push.sendInBackground();
     		
     		Intent _i = new Intent();
     		_i.setClass(getActivity(), MessageActivity.class);
     		_i.putExtra("text", _textbox1.getText().toString());
-    		getActivity().startActivity(_i);
-    		
-    		_textbox1.setText("");    		
+    		getActivity().startActivity(_i);    		
         }
     }
 
