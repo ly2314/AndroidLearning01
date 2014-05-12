@@ -27,9 +27,12 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.os.Build;
+
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.PushService;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -43,6 +46,8 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
         Parse.initialize(this, "UL5aUW60NIRAoOzKCK0Oe9ddu8jRrkQKZ61WJT2l", "P5e07cjyEJJAXdvcpfK0nuSsO7DPy5f2ISoXXlgx");
+        PushService.setDefaultPushCallback(this, ActionBarActivity.class);
+        ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 
 
