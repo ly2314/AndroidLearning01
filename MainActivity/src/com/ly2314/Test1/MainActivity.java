@@ -27,6 +27,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.os.Build;
+import android.provider.Settings.Secure;
 
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
@@ -50,6 +51,9 @@ public class MainActivity extends ActionBarActivity {
         PushService.setDefaultPushCallback(this, ActionBarActivity.class);
         ParseInstallation.getCurrentInstallation().saveInBackground();
 		PushService.subscribe(this, "all", ActionBarActivity.class);
+		PushService.subscribe(this, "id_" + getDeviceId(), MainActivity.class);
+
+		register();
     }
 
 
@@ -81,6 +85,17 @@ public class MainActivity extends ActionBarActivity {
         alert.setMessage(txt.getText().toString());
         alert.show();
     }*/
+
+	private String getDeviceId() {
+		return Secure.getString(getContentResolver(), Secure.ANDROID_ID);
+	}
+	
+	private void register() {
+		String id = getDeviceId();
+		ParseObject object = new ParseObject("DeviceId");
+		object.put("deviceId", id);
+		object.saveInBackground();
+	}
     
     /**
      * A placeholder fragment containing a simple view.
