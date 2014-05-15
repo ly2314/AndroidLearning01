@@ -1,5 +1,9 @@
 package com.ly2314.Test1;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -20,20 +24,25 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.os.Build;
 import android.provider.Settings.Secure;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.parse.PushService;
 
 public class MainActivity extends ActionBarActivity {
@@ -110,6 +119,7 @@ public class MainActivity extends ActionBarActivity {
         private CheckBox _checkbox1;
         private SharedPreferences sp;
         private SharedPreferences.Editor editor;
+        private Spinner _spinner;
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -165,8 +175,31 @@ public class MainActivity extends ActionBarActivity {
 					}
 				}            	
             });
+            
+            _spinner = (Spinner) rootView.findViewById(R.id.spinner1);
+            loadDeviceId();
+            
             return rootView;
         }
+        
+        private void loadDeviceId()
+        {
+        	String deviceId = (String) _spinner.getSelectedItem();
+			ParseQuery<ParseObject> query = ParseQuery.getQuery("DeviceId");
+			query.findInBackground(new FindCallback<ParseObject>() {
+				@Override
+				public void done(List<ParseObject> objects, ParseException e) {
+					Set<String> set = new HashSet<String>();
+					for (int i = 0; i < objects.size(); i++) {
+						set.add(objects.get(i).getString("deviceId"));
+						}
+						ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+								getActivity(),
+								android.R.layout.simple_spinner_item, set.toArray(new String[set.size()]));
+						_spinner.setAdapter(adapter);
+					}
+			});
+		}        	 
         
         public void SendMessage()
         {
@@ -189,8 +222,10 @@ public class MainActivity extends ActionBarActivity {
 
     		_textbox1.setText("");
     		
+    		String deviceId = (String) _spinner.getSelectedItem();
+    		
     		ParsePush push = new ParsePush();
-    		push.setChannel("all");
+    		push.setChannel("id_" + deviceId);
     		push.setMessage(str);
     		push.sendInBackground();
     		
